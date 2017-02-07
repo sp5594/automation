@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/test/test.iml" filepath="$PROJECT_DIR$/test/test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/l2o_web_automation/test.iml" filepath="$PROJECT_DIR$/l2o_web_automation/test.iml" />
     </modules>
   </component>
 </project>

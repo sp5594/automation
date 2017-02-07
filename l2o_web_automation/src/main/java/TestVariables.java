@@ -1,5 +1,3 @@
-package l2oweb;
-
 import org.openqa.selenium.By;
 
 /**
