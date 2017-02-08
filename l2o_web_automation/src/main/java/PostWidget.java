@@ -14,6 +14,12 @@ public class PostWidget {
     By posttitle = By.id("learning_title");
     By postbody = By.xpath("//*[@id='ephox_textboxCreateLearning']/div/div[4]");
     By postbutton = By.id("postLearning");
+    By onlymepostbutton = By.xpath("//*[@id='10879']/div/div/div[5]/div/div/button");
+
+    By tagsicon = By.xpath("//*[@id='myFeedCreatePost']/ng-include/div/div[2]/div/div/div/div[2]/button");
+    By tagslist = By.xpath("//*[@id='postToCategories']");
+    By tagsicon1 = By.xpath("//*[@id='scrollbarTags']/div[2]/ul/li[1]/i");
+    By anonymousbutton = By.xpath("//*[@id='myFeedCreatePost']/ng-include/div/div[2]/div/div/div/div[3]/div[2]/ul/li/div/label");
 
     By recipientsbutton = By.xpath("//*[@id='myFeedCreatePost']/ng-include/div/div[2]/div/div/div/div[3]/div[1]/a/span[4]");
     By publicrecipient = By.id("publicSelected");
@@ -76,11 +82,35 @@ public class PostWidget {
 
     }
 
+    public void select6tags(){
 
+        for(int i = 1; i <= 6; i++){
+
+            driver.findElement(By.xpath("//*[@id='scrollbarTags']/div[2]/ul/li[" + i + "]/i")).click();
+
+        }
+    }
+
+    public void clickontagsicon(){
+
+        driver.findElement(tagsicon).click();
+    }
+
+    public void clickonanyonmousbutton(){
+
+        driver.findElement(anonymousbutton).click();
+    }
 
     public void clickonclosepopup(){
 
         driver.findElement(closepopup).click();
+
+    }
+
+
+    public void clickononlymepostbutton(){
+
+        driver.findElement(onlymepostbutton).click();
 
     }
 

@@ -32,16 +32,30 @@ TestCase extends TestVariables {
 
       login();
 
-      createapublicpost();
-      createanonlymepost();
-      createacommunitypost();
+
+      createanonlymepost("notanonymous");
+
+  /*
+      createapublicpost("notanonymous");
+      createapublicpost("anonymous");
+
+      createanonlymepost("notanonymous");
+      createanonlymepost("anonymous");
+
+      createacommunitypost("notanonymous");
+      createacommunitypost("anonymous");
+
+      createapublicandcommunitypost("notanonymous");
+      createapublicandcommunitypost("anonymous");
+
+
       createapubliccommunity();
       createaprivatecommunity();
       createainviteonlycommunity();
-
+*/
       logout();
 
-      email_registration();
+   //   email_registration();
 
 
     }
@@ -91,62 +105,109 @@ TestCase extends TestVariables {
 
     }
 
-    public void createapublicpost(){
+    public void createapublicpost(String anonymouscheck){
 
         filloutpostinfo();
-        PostWidget commonelement = new PostWidget(driver);
-        wait.until(ExpectedConditions.elementToBeClickable(commonelement.recipientsbutton));
-        commonelement.clickonrecipientsbutton();
-        wait.until(ExpectedConditions.elementToBeClickable(commonelement.publicrecipient));
-        commonelement.clickonpublicrecipient();
-        wait.until(ExpectedConditions.elementToBeClickable(commonelement.postbutton));
-        commonelement.clickonpostbutton();
-        wait.until(ExpectedConditions.elementToBeClickable(commonelement.closepopup));
-        commonelement.clickonclosepopup();
+        PostWidget post = new PostWidget(driver);
+        wait.until(ExpectedConditions.elementToBeClickable(post.recipientsbutton));
+        post.clickonrecipientsbutton();
+        wait.until(ExpectedConditions.elementToBeClickable(post.publicrecipient));
+        post.clickonpublicrecipient();
+        if(anonymouscheck.equals("anonymous")){
 
-        //verfies that you`re on the public feed
-        wait.until(ExpectedConditions.elementToBeClickable(commonelement.postwidget));
+            wait.until(ExpectedConditions.elementToBeClickable(post.anonymousbutton));
+            post.clickonanyonmousbutton();
 
+        }
+        wait.until(ExpectedConditions.elementToBeClickable(post.postbutton));
+        post.clickonpostbutton();
+        wait.until(ExpectedConditions.elementToBeClickable(post.closepopup));
+        post.clickonclosepopup();
+
+        //verfies that you`re in my feed
+        wait.until(ExpectedConditions.elementToBeClickable(post.postwidget));
 
     }
 
-    public void createanonlymepost(){
+
+    public void createanonlymepost(String anonymouscheck){
 
         filloutpostinfo();
-        PostWidget commonelement = new PostWidget(driver);
-        wait.until(ExpectedConditions.elementToBeClickable(commonelement.recipientsbutton));
-        commonelement.clickonrecipientsbutton();
-        wait.until(ExpectedConditions.elementToBeClickable(commonelement.onlymerecipient));
-        commonelement.clickononlymerecipient();
-        wait.until(ExpectedConditions.elementToBeClickable(commonelement.postbutton));
-        commonelement.clickonpostbutton();
+        PostWidget post = new PostWidget(driver);
+        wait.until(ExpectedConditions.elementToBeClickable(post.recipientsbutton));
+        post.clickonrecipientsbutton();
+        wait.until(ExpectedConditions.elementToBeClickable(post.onlymerecipient));
+        post.clickononlymerecipient();
+        wait.until(ExpectedConditions.elementToBeClickable(post.postbutton));
+        post.clickonpostbutton();
 
         //verfies that you`re in the private journal
         PrivateJournal journal = new PrivateJournal(driver);
-        wait.until(ExpectedConditions.elementToBeClickable(commonelement.onlymerecipient));
+        wait.until(ExpectedConditions.elementToBeClickable(journal.onlymetab));
+
+        //click on the post button
+     //   wait.until(ExpectedConditions.elementToBeClickable(post.postbutton));
+     //   post.clickonpostbutton();
 
         gotomyfeed();
 
+
+
+
     }
 
-    public void createacommunitypost(){
+    public void createacommunitypost(String anonymouscheck){
 
         filloutpostinfo();
-        PostWidget commonelement = new PostWidget(driver);
-        wait.until(ExpectedConditions.elementToBeClickable(commonelement.recipientsbutton));
-        commonelement.clickonrecipientsbutton();
-        wait.until(ExpectedConditions.elementToBeClickable(commonelement.communitiesrecipient));
-        commonelement.clickoncommunitiesrecipient();
-        wait.until(ExpectedConditions.elementToBeClickable(commonelement.firstcommunityrecipient));
-        commonelement.clickonfirstcommunityrecipient();
-        wait.until(ExpectedConditions.elementToBeClickable(commonelement.postbutton));
-        commonelement.clickonpostbutton();
+        PostWidget post = new PostWidget(driver);
+        wait.until(ExpectedConditions.elementToBeClickable(post.recipientsbutton));
+        post.clickonrecipientsbutton();
+        wait.until(ExpectedConditions.elementToBeClickable(post.communitiesrecipient));
+        post.clickoncommunitiesrecipient();
+        wait.until(ExpectedConditions.elementToBeClickable(post.firstcommunityrecipient));
+        post.clickonfirstcommunityrecipient();
+        if(anonymouscheck.equals("anonymous")){
+
+            wait.until(ExpectedConditions.elementToBeClickable(post.anonymousbutton));
+            post.clickonanyonmousbutton();
+
+        }
+        wait.until(ExpectedConditions.elementToBeClickable(post.postbutton));
+        post.clickonpostbutton();
 
         //verfies that you`re in the community feed
         CommunityFeed feed = new CommunityFeed(driver);
         wait.until(ExpectedConditions.elementToBeClickable(feed.poststab));
 
         gotomyfeed();
+
+    }
+
+    public void createapublicandcommunitypost(String anonymouscheck){
+
+        filloutpostinfo();
+        PostWidget post = new PostWidget(driver);
+        wait.until(ExpectedConditions.elementToBeClickable(post.recipientsbutton));
+        post.clickonrecipientsbutton();
+        wait.until(ExpectedConditions.elementToBeClickable(post.publicrecipient));
+        post.clickonpublicrecipient();
+        wait.until(ExpectedConditions.elementToBeClickable(post.communitiesrecipient));
+        post.clickoncommunitiesrecipient();
+        wait.until(ExpectedConditions.elementToBeClickable(post.firstcommunityrecipient));
+        post.clickonfirstcommunityrecipient();
+        if(anonymouscheck.equals("anonymous")){
+
+            wait.until(ExpectedConditions.elementToBeClickable(post.anonymousbutton));
+            post.clickonanyonmousbutton();
+
+        }
+        wait.until(ExpectedConditions.elementToBeClickable(post.postbutton));
+        post.clickonpostbutton();
+        wait.until(ExpectedConditions.elementToBeClickable(post.closepopup));
+        post.clickonclosepopup();
+
+        //verfies that you`re on the public feed
+        wait.until(ExpectedConditions.elementToBeClickable(post.postwidget));
 
     }
 
@@ -157,6 +218,7 @@ TestCase extends TestVariables {
         filloutcommunityinfo(publiccommunityname);
         createbuttonthread();
         checkifyouseethelearningwidget();
+        gotomyfeed();
 
     }
 
@@ -169,6 +231,7 @@ TestCase extends TestVariables {
         communities.clickonprivateicon();
         createbuttonthread();
         checkifyouseethelearningwidget();
+        gotomyfeed();
 
     }
 
@@ -186,6 +249,7 @@ TestCase extends TestVariables {
         communities.clickoninviteonlyicon();
         createbuttonthread();
         checkifyouseethelearningwidget();
+        gotomyfeed();
 
     }
 
@@ -199,8 +263,8 @@ TestCase extends TestVariables {
 
     public void checkifyouseethelearningwidget(){
 
-        PostWidget commonelement = new PostWidget(driver);
-        wait.until(ExpectedConditions.elementToBeClickable(commonelement.postwidget));
+        PostWidget post = new PostWidget(driver);
+        wait.until(ExpectedConditions.elementToBeClickable(post.postwidget));
     }
 
     public void gotocommunitypage(){
@@ -279,20 +343,24 @@ TestCase extends TestVariables {
     public void filloutpostinfo(){
 
         try {
-            PostWidget commonelement = new PostWidget(driver);
+            PostWidget post = new PostWidget(driver);
             Thread.sleep(5000);
-            wait.until(ExpectedConditions.elementToBeClickable(commonelement.postwidget));
-            commonelement.clickonpostwidget();
+            wait.until(ExpectedConditions.elementToBeClickable(post.postwidget));
+            post.clickonpostwidget();
             Thread.sleep(5000);
-            wait.until(ExpectedConditions.elementToBeClickable(commonelement.posttitle));
-            commonelement.setposttitle(posttitle);
+            wait.until(ExpectedConditions.elementToBeClickable(post.posttitle));
+            post.setposttitle(posttitle);
             Thread.sleep(3000);
-            wait.until(ExpectedConditions.elementToBeClickable(commonelement.postbody));
+            wait.until(ExpectedConditions.elementToBeClickable(post.postbody));
             Actions actions = new Actions(driver);
             actions.moveToElement(driver.findElement(By.xpath("//*[@id='ephox_textboxCreateLearning']/div/div[4]")));;
             actions.click();
             actions.sendKeys(postbodytext);
             actions.build().perform();
+            post.clickontagsicon();
+            post.select6tags();
+            post.clickontagsicon();
+            wait.until(ExpectedConditions.invisibilityOfElementLocated(post.tagslist));
             }catch (Exception e){
 
             e.printStackTrace();

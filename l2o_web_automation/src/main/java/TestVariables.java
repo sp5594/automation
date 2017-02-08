@@ -17,16 +17,17 @@ public class TestVariables {
     String repeatpassword = "L2o123456";
 
     //create a community
-    String publiccommunityname = "RandomCommunityName_lol3fd4ff";
-    String privatecommunityname = "RandomCommunityName_l00vcvvdc0df4";
-    String inviteonlycommunityname = "RandomCommunityName_f6vcvvhcvccv46";
+    String publiccommunityname = "RandomCommunityName_lol3fd4dffdf";
+    String privatecommunityname = "RandomCommunityName_l00vcvvdfdfddc0df4";
+    String inviteonlycommunityname = "RandomCommunityName_f6vcvvhddfdfdcvccv46";
     String communitydescription = "This community was creating using Selenium Framework";
     String searchname = "shail";
     String image = "C:\\Users\\shail\\Desktop\\testimage.png";
 
     //create a learning
     String posttitle = "Automation Test";
-    String postbodytext =  "This post was created using Selenium Automation Framework";
+    String postbodytext =  "Test Automated Post. This post was created using Selenium Automation Framework";
 
+    //*[@id="learning-div10881"]
 }
 
