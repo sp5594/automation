@@ -24,6 +24,10 @@ public class TestVariables{
     String searchname = "shail";
     String image = "C:\\Users\\shail\\Desktop\\testimage.png";
 
+    //search a community
+    String mycommunitysearch = "Banks";
+    String browseallcommunitysearch = "admin stuff testing";
+
     //create a learning
     String posttitle = "Automation Test";
     String postbodytext =  "Test Automated Post. This post was created using Selenium Automation Framework";

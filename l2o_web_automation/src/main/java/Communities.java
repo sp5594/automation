@@ -16,6 +16,10 @@ public class Communities {
 
     By browsecommunitiestab = By.xpath("/html/body/app-layout/div/section/ui-view/div/div[1]/div/div[2]/div/a[2]");
     By mycommunitiestab = By.xpath("/html/body/app-layout/div/section/ui-view/div/div[1]/div/div[2]/div/a[1]");
+    By searchcommunityfield = By.id("searchBoxForCommunities");
+    By firstmycommunityresult = By.xpath("/html/body/app-layout/div/section/ui-view/div/div[3]/div/div[1]");
+    By firstbrowsecommunityresult = By.xpath("/html/body/app-layout/div/section/ui-view/div/div[4]/div/div[1]");
+    By getFirstbrowsecommunityname = By.xpath("/html/body/app-layout/div/section/ui-view/div/div[3]/div/div[1]/div/div[2]/div[3]/div[1]");
 
     By communityname = By.id("communityName");
     By communitydescription = By.id("desc");
@@ -40,6 +44,7 @@ public class Communities {
 
     By create_button = By.id("create-community-btn");
     By gotit_button = By.xpath("/html/body/app-layout/div/div[9]/div/div/div[2]/button");
+    By join_button = By.xpath("/html/body/app-layout/div/section/ui-view/div/div[4]/div[1]/div/div[2]/div[2]/div[3]/button");
 
     public Communities(WebDriver driver){
 
@@ -60,6 +65,30 @@ public class Communities {
 
         driver.findElement(browsecommunitiestab).click();
     }
+
+
+    public void searchforacommunity(String communitynamevalue){
+
+        driver.findElement(searchcommunityfield).sendKeys(communitynamevalue);
+    }
+
+    public void clickonfirstmycommunityresult(){
+
+        driver.findElement(firstmycommunityresult).click();
+    }
+
+    public void clickonfirstbrowsecommunityresult(){
+
+        driver.findElement(firstbrowsecommunityresult).click();
+    }
+
+    public String getfirstbrowsecommunityname(){
+
+      String name = driver.findElement(getFirstbrowsecommunityname).getText();
+
+      return name;
+    }
+
 
 
     public void setCommunityName(String communitynamevalue){
@@ -142,22 +171,14 @@ public class Communities {
 
     }
 
-    // check methods
+    public void clickonjoinbutton(){
 
-    public boolean isgotitbuttonvisible(){
+        driver.findElement(join_button).click();
 
-        try{
-
-            driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-            driver.findElement(gotit_button);
-
-            return true;
-        }
-        catch(NoSuchElementException e){
-
-            return false;
-        }
     }
+
+
+
 
 
 }

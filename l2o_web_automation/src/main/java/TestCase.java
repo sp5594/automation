@@ -11,6 +11,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.SystemClock;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
 
@@ -39,13 +40,14 @@ TestCase extends TestVariables {
 
       login();
 
-     //   createapublicpost("notanonymous");
-     //   createapublicpost("anonymous");
+      joinacommunityfromcommunityfeedpage();
+      //  joinacommunityfromcommunitypage();
 
-        createanonlymepost("notanonymous");
-     // createacommunitypost("notanonymous");
-     // createanonlymepost("notanonymous");
 
+        //searchforamycommunity();
+        // searchforabrowseallcommunity();
+
+     // searchforamycommunity();
   /*
       createapublicpost("notanonymous");
       createapublicpost("anonymous");
@@ -64,7 +66,7 @@ TestCase extends TestVariables {
       createaprivatecommunity();
       createainviteonlycommunity();
 */
-      logout();
+   //   logout();
 
    //   email_registration();
 
@@ -295,6 +297,86 @@ TestCase extends TestVariables {
 
     }
 
+    public void joinacommunityfromcommunitypage(){
+
+        gotocommunitypage();
+        clickonbrowseallcommunitiestab();
+        searchforacommunity(browseallcommunitysearch);
+
+        Communities communities = new Communities(driver);
+        CommunityFeed communityfeed = new CommunityFeed(driver);
+        try {
+            Thread.sleep(5000);
+            wait.until(ExpectedConditions.elementToBeClickable(communities.firstbrowsecommunityresult));
+            // join
+            communities.clickonjoinbutton();
+            wait.until(ExpectedConditions.elementToBeClickable(communityfeed.gotitbutton));
+            communityfeed.clickongotitbutton();
+            clickonmycommunitiestab();
+            Thread.sleep(5000);
+            wait.until(ExpectedConditions.elementToBeClickable(communities.firstmycommunityresult));
+
+            String check = communities.getfirstbrowsecommunityname();
+
+            if(check.equals(browseallcommunitysearch)){
+
+                System.out.println("Succesfully joined " + browseallcommunitysearch);
+            }
+            else{
+                System.out.println("Unable to join " + browseallcommunitysearch);
+            }
+
+        }catch (Exception e){
+
+            e.printStackTrace();
+        }
+
+    }
+
+    public void joinacommunityfromcommunityfeedpage(){
+
+        gotocommunitypage();
+        clickonbrowseallcommunitiestab();
+        searchforacommunity(browseallcommunitysearch);
+
+        Communities communities = new Communities(driver);
+        CommunityFeed communityfeed = new CommunityFeed(driver);
+        try {
+            Thread.sleep(5000);
+            wait.until(ExpectedConditions.elementToBeClickable(communities.firstbrowsecommunityresult));
+            communities.clickonfirstbrowsecommunityresult();
+            Thread.sleep(5000);
+            wait.until(ExpectedConditions.elementToBeClickable(communityfeed.joinbutton));
+            communityfeed.clickonjoinbutton();
+            wait.until(ExpectedConditions.elementToBeClickable(communityfeed.yesbutton));
+            communityfeed.clickonyesbutton();
+            Thread.sleep(3000);
+            wait.until(ExpectedConditions.elementToBeClickable(communityfeed.gotitbutton));
+            communityfeed.clickongotitbutton();
+            gotocommunitypage();
+            clickonmycommunitiestab();
+            searchforacommunity(browseallcommunitysearch);
+            Thread.sleep(5000);
+            wait.until(ExpectedConditions.elementToBeClickable(communities.firstmycommunityresult));
+
+            String check = communities.getfirstbrowsecommunityname();
+
+            if(check.equals(browseallcommunitysearch)){
+
+                System.out.println("Succesfully joined " + browseallcommunitysearch);
+            }
+            else{
+                System.out.println("Unable to join " + browseallcommunitysearch);
+            }
+
+        }catch (Exception e){
+
+            e.printStackTrace();
+        }
+
+    }
+
+
 
 
     /**
@@ -458,6 +540,35 @@ TestCase extends TestVariables {
         }
 
     }
+
+    public void searchforacommunity(String communityname){
+
+    //    gotocommunitypage();
+        Communities communities = new Communities(driver);
+      //  wait.until(ExpectedConditions.elementToBeClickable(communities.mycommunitiestab));
+     //   communities.clickonmycommunities();
+        wait.until(ExpectedConditions.elementToBeClickable(communities.searchcommunityfield));
+        communities.searchforacommunity(communityname);
+
+    }
+
+    public void clickonmycommunitiestab(){
+
+        Communities communities = new Communities(driver);
+        wait.until(ExpectedConditions.elementToBeClickable(communities.mycommunitiestab));
+        communities.clickonmycommunities();
+    }
+
+    public void clickonbrowseallcommunitiestab(){
+
+        Communities communities = new Communities(driver);
+        wait.until(ExpectedConditions.elementToBeClickable(communities.browsecommunitiestab));
+        communities.clickonbrowsecommunities();
+    }
+
+
+
+
 
 
 
