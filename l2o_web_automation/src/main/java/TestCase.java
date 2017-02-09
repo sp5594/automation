@@ -1,13 +1,17 @@
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import javafx.geometry.Pos;
+import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.SystemClock;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -35,7 +39,10 @@ TestCase extends TestVariables {
 
       login();
 
+     //   createapublicpost("notanonymous");
+     //   createapublicpost("anonymous");
 
+        createanonlymepost("notanonymous");
      // createacommunitypost("notanonymous");
      // createanonlymepost("notanonymous");
 
@@ -80,19 +87,8 @@ TestCase extends TestVariables {
 
         //verify method
         PostWidget post = new PostWidget(driver);
-        Boolean bool = post.ispostwidgetvisible();
-
-        String verify = bool.toString();
-        if(verify.equals("true")){
-
-            System.out.println("Successfully Logged In");
-
-        }else if(verify.equals("false")){
-
-            System.out.println("Failed to Log In");
-
-        }
-
+        Boolean bool = verifymethod(post.postwidget);
+        verifymessage(bool, "Successfully Logged In", "Failed to Log In");
 
     }
 
@@ -105,22 +101,11 @@ TestCase extends TestVariables {
 
         //verify method
         HomePage home = new HomePage(driver);
-        Boolean bool = home.isloginfieldvisible();
-
-        String verify = bool.toString();
-        if(verify.equals("true")){
-
-            System.out.println("Successfully Logged Out");
-
-        }else if(verify.equals("false")){
-
-            System.out.println("Failed to Log Out");
-
-        }
-
-
+        Boolean bool = verifymethod(home.login_email);
+        verifymessage(bool, "Successfully Logged Out", "Failed to Log Out");
 
     }
+
 
     public void email_registration(){
 
@@ -157,10 +142,25 @@ TestCase extends TestVariables {
         wait.until(ExpectedConditions.elementToBeClickable(post.closepopup));
         post.clickonclosepopup();
 
-        //verfies that you`re in my feed
-        wait.until(ExpectedConditions.elementToBeClickable(post.postwidget));
+        gotocommunitypage();
 
-        checkifyouseethelearningwidget();
+
+        //verfies that you`re in my feed
+        Boolean bool = verifymethod(post.postwidget);
+        if(anonymouscheck.equals("anonymous")){
+
+            verifymessage(bool, "Anonymous Post has been posted to public recipients",
+                                "Anonymous Post has NOT been posted to public recipients");
+
+        }else
+        {
+
+            verifymessage(bool, "Post has been posted to public recipients",
+                    "Post has NOT been posted to public recipients");
+
+        }
+
+
 
     }
 
@@ -176,9 +176,16 @@ TestCase extends TestVariables {
         wait.until(ExpectedConditions.elementToBeClickable(post.postbutton));
         post.clickonpostbutton();
 
+        gotomyfeed();
+
         //verfies that you`re in the private journal
         PrivateJournal journal = new PrivateJournal(driver);
-        wait.until(ExpectedConditions.elementToBeClickable(journal.onlymetab));
+        //wait.until(ExpectedConditions.elementToBeClickable(journal.onlymetab));
+        //verfies that you`re in my feed
+        Boolean bool = verifymethod(journal.onlymetab);
+        verifymessage(bool, "Post is saved as an only me post",
+                    "Post is saved as an only me post");
+
 
         //click on the post button
      //   wait.until(ExpectedConditions.elementToBeClickable(post.postbutton));
@@ -417,6 +424,41 @@ TestCase extends TestVariables {
         }
 
     }
+
+
+    public boolean verifymethod(By by){
+
+        boolean value;
+
+        try{
+
+            Thread.sleep(5000);
+            driver.findElement(by);
+
+            return true;
+
+        } catch(Exception e){
+
+            return false;
+        }
+
+    }
+
+    public void verifymessage(Boolean bool, String message1, String message2){
+
+        String verify = bool.toString();
+        if(verify.equals("true")){
+
+            System.out.println(message1);
+
+        }else if(verify.equals("false")){
+
+            System.out.println(message2);
+
+        }
+
+    }
+
 
 
 }
