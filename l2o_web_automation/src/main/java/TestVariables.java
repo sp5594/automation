@@ -3,7 +3,7 @@ import org.openqa.selenium.By;
 /**
  * Created by shail on 1/23/2017.
  */
-public class TestVariables {
+public class TestVariables{
 
     //login
     String login_email = "hey123zz@yahoo.com";
@@ -28,6 +28,5 @@ public class TestVariables {
     String posttitle = "Automation Test";
     String postbodytext =  "Test Automated Post. This post was created using Selenium Automation Framework";
 
-    //*[@id="learning-div10881"]
 }
 

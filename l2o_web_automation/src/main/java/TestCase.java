@@ -1,9 +1,12 @@
+import com.sun.org.apache.xpath.internal.operations.Bool;
+import javafx.geometry.Pos;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.SystemClock;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 
@@ -33,7 +36,8 @@ TestCase extends TestVariables {
       login();
 
 
-      createanonlymepost("notanonymous");
+     // createacommunitypost("notanonymous");
+     // createanonlymepost("notanonymous");
 
   /*
       createapublicpost("notanonymous");
@@ -74,7 +78,22 @@ TestCase extends TestVariables {
         home.setLogin_password(login_password);
         home.clickonlogin();
 
-       checkifyouseethelearningwidget();
+        //verify method
+        PostWidget post = new PostWidget(driver);
+        Boolean bool = post.ispostwidgetvisible();
+
+        String verify = bool.toString();
+        if(verify.equals("true")){
+
+            System.out.println("Successfully Logged In");
+
+        }else if(verify.equals("false")){
+
+            System.out.println("Failed to Log In");
+
+        }
+
+
     }
 
     public void logout(){
@@ -84,8 +103,22 @@ TestCase extends TestVariables {
         header.clickonmoremenu();
         header.clickonlogout();
 
+        //verify method
         HomePage home = new HomePage(driver);
-        wait.until(ExpectedConditions.elementToBeClickable(home.login_email));
+        Boolean bool = home.isloginfieldvisible();
+
+        String verify = bool.toString();
+        if(verify.equals("true")){
+
+            System.out.println("Successfully Logged Out");
+
+        }else if(verify.equals("false")){
+
+            System.out.println("Failed to Log Out");
+
+        }
+
+
 
     }
 
@@ -126,6 +159,8 @@ TestCase extends TestVariables {
 
         //verfies that you`re in my feed
         wait.until(ExpectedConditions.elementToBeClickable(post.postwidget));
+
+        checkifyouseethelearningwidget();
 
     }
 
@@ -265,6 +300,7 @@ TestCase extends TestVariables {
 
         PostWidget post = new PostWidget(driver);
         wait.until(ExpectedConditions.elementToBeClickable(post.postwidget));
+
     }
 
     public void gotocommunitypage(){
@@ -313,6 +349,7 @@ TestCase extends TestVariables {
         } catch (Exception e){
             e.printStackTrace();
         }
+
 
         wait.until(ExpectedConditions.elementToBeClickable(communities.gotit_button));
         communities.clickongotitbutton();

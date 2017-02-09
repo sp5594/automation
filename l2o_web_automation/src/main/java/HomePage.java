@@ -1,5 +1,10 @@
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by shail on 1/23/2017.
@@ -76,4 +81,20 @@ public class HomePage {
         driver.findElement(signup).click();
     }
 
+    // check methods
+
+    public boolean isloginfieldvisible(){
+
+        try{
+
+            driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+            driver.findElement(login_email);
+
+            return true;
+        }
+        catch(NoSuchElementException e){
+
+            return false;
+        }
+    }
 }

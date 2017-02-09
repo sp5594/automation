@@ -1,5 +1,8 @@
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by shail on 1/24/2017.
@@ -137,6 +140,23 @@ public class Communities {
 
         driver.findElement(addicon).click();
 
+    }
+
+    // check methods
+
+    public boolean isgotitbuttonvisible(){
+
+        try{
+
+            driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+            driver.findElement(gotit_button);
+
+            return true;
+        }
+        catch(NoSuchElementException e){
+
+            return false;
+        }
     }
 
 
