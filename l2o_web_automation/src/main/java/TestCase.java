@@ -1,74 +1,78 @@
-import com.sun.org.apache.xpath.internal.operations.Bool;
-import javafx.geometry.Pos;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.SystemClock;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
 
 /**
  * Created by shail on 1/19/2017.
  */
-public class
-TestCase extends TestVariables {
+public class TestCase extends TestVariables {
 
     WebDriver driver;
     WebDriverWait wait;
 
+    @Before
+    public void setup(){
+
+        try {
+
+
+            System.setProperty("webdriver.chrome.driver", "chromedriver");
+
+            driver = new ChromeDriver();
+            driver.manage().window().maximize();
+            //  driver.get("http://l2o.com");
+            driver.get("http://webapp-dev-lwa.codewalla.com/home");
+
+            wait = new WebDriverWait(driver, 10); //waits for 10 secs
+
+            Thread.sleep(5000);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @Test
     public void test(){
 
-        System.setProperty("webdriver.chrome.driver", "chromedriver");
+        driver.manage().timeouts().setScriptTimeout(30, TimeUnit.SECONDS);
 
-       driver = new ChromeDriver();
-       driver.manage().window().maximize();
-     //  driver.get("http://l2o.com");
-      driver.get("http://webapp-stg-lwa.codewalla.com/home");
+     //   email_registration();
+     //   logout();
+        login();
+     /*   resetonboardingscreens();
 
-       wait = new WebDriverWait(driver, 20); //waits for 10 secs
+        posttohomecommunity("notanonymous");
+        posttohomecommunity("anonymous");
 
+        posttoonlyme("notanonymous");
+        posttoonlyme("anonymous");
 
-      login();
-
-      joinacommunityfromcommunityfeedpage();
-      //  joinacommunityfromcommunitypage();
-
-
-        //searchforamycommunity();
-        // searchforabrowseallcommunity();
-
-     // searchforamycommunity();
-  /*
-      createapublicpost("notanonymous");
-      createapublicpost("anonymous");
-
-      createanonlymepost("notanonymous");
-      createanonlymepost("anonymous");
-
-      createacommunitypost("notanonymous");
-      createacommunitypost("anonymous");
-
-      createapublicandcommunitypost("notanonymous");
-      createapublicandcommunitypost("anonymous");
+        posttoarandomcommunity("notanonymous");
+        posttoarandomcommunity("anonymous");
 
 
-      createapubliccommunity();
-      createaprivatecommunity();
-      createainviteonlycommunity();
-*/
-   //   logout();
+       createapubliccommunity();
+       createaprivatecommunity();
+       createaninviteonlycommunity(); */
 
-   //   email_registration();
+   //   joinacommunityfromcommunityfeedpage();
+   //   joinacommunityfromcommunitypage();
+
+      //  editprofile();
+
+        logout();
+
+        //resetpassword();
 
 
     }
@@ -81,16 +85,18 @@ TestCase extends TestVariables {
 
     public void login(){
 
-        HomePage home = new HomePage(driver);
+        LandingPage home = new LandingPage(driver);
         wait.until(ExpectedConditions.elementToBeClickable(home.login_email));
         home.setLogin_email(login_email);
         home.setLogin_password(login_password);
         home.clickonlogin();
 
+
         //verify method
         PostWidget post = new PostWidget(driver);
-        Boolean bool = verifymethod(post.postwidget);
-        verifymessage(bool, "Successfully Logged In", "Failed to Log In");
+
+        verifymessage(post.postwidget, "Log In", "Log In");
+
 
     }
 
@@ -99,190 +105,213 @@ TestCase extends TestVariables {
         Header header = new Header(driver);
         wait.until(ExpectedConditions.elementToBeClickable(header.moremenu));
         header.clickonmoremenu();
+        wait.until(ExpectedConditions.elementToBeClickable(header.logout));
         header.clickonlogout();
 
         //verify method
-        HomePage home = new HomePage(driver);
-        Boolean bool = verifymethod(home.login_email);
-        verifymessage(bool, "Successfully Logged Out", "Failed to Log Out");
+        LandingPage home = new LandingPage(driver);
+        verifymessage(home.login_email, "Log Out", "Log Out");
 
     }
 
 
     public void email_registration(){
 
-        HomePage home = new HomePage(driver);
+        LandingPage home = new LandingPage(driver);
         wait.until(ExpectedConditions.elementToBeClickable(home.firstname));
         home.setFirstname(firstname);
         home.setLastname(lastname);
         home.setRegister_email(register_email);
         home.setRegister_password(register_password);
         home.setrepeatpassword(repeatpassword);
+        home.selectorganization(organization);
         home.clickoniam13yrsold();
         home.clickonsignup();
 
-        wait.until(ExpectedConditions.elementToBeClickable(home.emailverificationmodal));
+        Onboarding onboarding = new Onboarding(driver);
+        wait.until(ExpectedConditions.elementToBeClickable(onboarding.myfeed_gotitbutton));
+        onboarding.clickonmyfeedgotitbutton();
 
-    }
-
-    public void createapublicpost(String anonymouscheck){
-
-        filloutpostinfo();
-        PostWidget post = new PostWidget(driver);
-        wait.until(ExpectedConditions.elementToBeClickable(post.recipientsbutton));
-        post.clickonrecipientsbutton();
-        wait.until(ExpectedConditions.elementToBeClickable(post.publicrecipient));
-        post.clickonpublicrecipient();
-        if(anonymouscheck.equals("anonymous")){
-
-            wait.until(ExpectedConditions.elementToBeClickable(post.anonymousbutton));
-            post.clickonanyonmousbutton();
-
-        }
-        wait.until(ExpectedConditions.elementToBeClickable(post.postbutton));
-        post.clickonpostbutton();
-        wait.until(ExpectedConditions.elementToBeClickable(post.closepopup));
-        post.clickonclosepopup();
-
-        gotocommunitypage();
-
-
-        //verfies that you`re in my feed
-        Boolean bool = verifymethod(post.postwidget);
-        if(anonymouscheck.equals("anonymous")){
-
-            verifymessage(bool, "Anonymous Post has been posted to public recipients",
-                                "Anonymous Post has NOT been posted to public recipients");
-
-        }else
-        {
-
-            verifymessage(bool, "Post has been posted to public recipients",
-                    "Post has NOT been posted to public recipients");
-
-        }
-
-
+        gothroughonboardingscreens();
 
     }
 
 
-    public void createanonlymepost(String anonymouscheck){
+    public void resetpassword(){
+
+        LandingPage home = new LandingPage(driver);
+        wait.until(ExpectedConditions.elementToBeClickable(home.resetpassword));
+        home.clickonresetpassword();
+
+        wait.until(ExpectedConditions.elementToBeClickable(home.resetpasswordemail));
+        home.setresetpasswordemail("hey123zz@yahoo.com");
+
+        wait.until(ExpectedConditions.elementToBeClickable(home.resetyourpasswordbutton));
+        home.clickonresetyourpasswordbutton();
+
+        wait.until(ExpectedConditions.elementToBeClickable(home.continuetologin));
+        home.clickoncontinuetologin();
+
+        verifymessage(home.login_email, "Password Reset", "Log In");
+
+    }
+
+    public void posttoonlyme(String anonymouscheck){
 
         filloutpostinfo();
+
         PostWidget post = new PostWidget(driver);
         wait.until(ExpectedConditions.elementToBeClickable(post.recipientsbutton));
         post.clickonrecipientsbutton();
         wait.until(ExpectedConditions.elementToBeClickable(post.onlymerecipient));
         post.clickononlymerecipient();
-        wait.until(ExpectedConditions.elementToBeClickable(post.postbutton));
-        post.clickonpostbutton();
-
-        gotomyfeed();
-
-        //verfies that you`re in the private journal
-        PrivateJournal journal = new PrivateJournal(driver);
-        //wait.until(ExpectedConditions.elementToBeClickable(journal.onlymetab));
-        //verfies that you`re in my feed
-        Boolean bool = verifymethod(journal.onlymetab);
-        verifymessage(bool, "Post is saved as an only me post",
-                    "Post is saved as an only me post");
-
-
-        //click on the post button
-     //   wait.until(ExpectedConditions.elementToBeClickable(post.postbutton));
-     //   post.clickonpostbutton();
-
-        gotomyfeed();
-
-
-
-
-    }
-
-    public void createacommunitypost(String anonymouscheck){
-
-        filloutpostinfo();
-        PostWidget post = new PostWidget(driver);
         wait.until(ExpectedConditions.elementToBeClickable(post.recipientsbutton));
         post.clickonrecipientsbutton();
-        wait.until(ExpectedConditions.elementToBeClickable(post.communitiesrecipient));
-        post.clickoncommunitiesrecipient();
-        wait.until(ExpectedConditions.elementToBeClickable(post.firstcommunityrecipient));
-        post.clickonfirstcommunityrecipient();
+
         if(anonymouscheck.equals("anonymous")){
 
             wait.until(ExpectedConditions.elementToBeClickable(post.anonymousbutton));
             post.clickonanyonmousbutton();
 
         }
+
         wait.until(ExpectedConditions.elementToBeClickable(post.postbutton));
         post.clickonpostbutton();
+
+
+        //verfies that you`re in the private journal
+        Profile journal = new Profile(driver);
+        wait.until(ExpectedConditions.elementToBeClickable(journal.onlymetab));
+
+        //waits for the first post to be visible
+        wait.until(ExpectedConditions.elementToBeClickable(journal.onlymepost1));
+
+        //wait until first post is visible then compare post title to the given title
+        Assert.assertEquals(posttitle, journal.getonlymepostitle1());
+
+        gotohomepage();
+
+
+    }
+
+    public void posttoarandomcommunity(String anonymouscheck){
+
+        filloutpostinfo();
+
+        PostWidget post = new PostWidget(driver);
+
+        wait.until(ExpectedConditions.elementToBeClickable(post.recipientsbutton));
+        post.clickonrecipientsbutton();
+
+        wait.until(ExpectedConditions.elementToBeClickable(post.communitiesrecipient));
+        post.clickoncommunitiesrecipient();
+
+        wait.until(ExpectedConditions.elementToBeClickable(post.firstcommunityrecipient));
+        post.clickonfirstcommunityrecipient();
+
+        if(anonymouscheck.equals("anonymous")){
+
+            wait.until(ExpectedConditions.elementToBeClickable(post.anonymousbutton));
+            post.clickonanyonmousbutton();
+
+        }
+
+        wait.until(ExpectedConditions.elementToBeClickable(post.postbutton));
+        post.clickonpostbutton();
+
+        wait.until(ExpectedConditions.elementToBeClickable(post.closepopup));
+        post.clickonclosepopup();
 
         //verfies that you`re in the community feed
         CommunityFeed feed = new CommunityFeed(driver);
         wait.until(ExpectedConditions.elementToBeClickable(feed.poststab));
 
-        gotomyfeed();
+        //waits for the first post to be visible
+        wait.until(ExpectedConditions.elementToBeClickable(feed.communitypost1));
+
+        //wait until first post is visible then compare post title to the given title
+        Assert.assertEquals(posttitle, feed.getcommunitypostitle1());
+
+        gotohomepage();
 
     }
 
-    public void createapublicandcommunitypost(String anonymouscheck){
+    public void posttohomecommunity(String anonymouscheck){
 
         filloutpostinfo();
+
         PostWidget post = new PostWidget(driver);
-        wait.until(ExpectedConditions.elementToBeClickable(post.recipientsbutton));
-        post.clickonrecipientsbutton();
-        wait.until(ExpectedConditions.elementToBeClickable(post.publicrecipient));
-        post.clickonpublicrecipient();
-        wait.until(ExpectedConditions.elementToBeClickable(post.communitiesrecipient));
-        post.clickoncommunitiesrecipient();
-        wait.until(ExpectedConditions.elementToBeClickable(post.firstcommunityrecipient));
-        post.clickonfirstcommunityrecipient();
+
         if(anonymouscheck.equals("anonymous")){
 
             wait.until(ExpectedConditions.elementToBeClickable(post.anonymousbutton));
             post.clickonanyonmousbutton();
 
         }
+
         wait.until(ExpectedConditions.elementToBeClickable(post.postbutton));
         post.clickonpostbutton();
+
+      //  driver.manage().timeouts().setScriptTimeout(5, TimeUnit.SECONDS);
         wait.until(ExpectedConditions.elementToBeClickable(post.closepopup));
         post.clickonclosepopup();
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(post.closepopupbackground));
 
-        //verfies that you`re on the public feed
-        wait.until(ExpectedConditions.elementToBeClickable(post.postwidget));
+
+        //verfies that you`re in the community feed
+        CommunityFeed feed = new CommunityFeed(driver);
+        wait.until(ExpectedConditions.elementToBeClickable(feed.poststab));
+
+        //waits for the first post to be visible
+        wait.until(ExpectedConditions.elementToBeClickable(feed.communitypost1));
+
+        //wait until first post is visible then compare post title to the given title
+        Assert.assertEquals(posttitle, feed.getcommunitypostitle1());
+
+        gotohomepage();
 
     }
+
 
 
     public void createapubliccommunity(){
 
         gotocommunitypage();
-        filloutcommunityinfo(publiccommunityname);
-        createbuttonthread();
-        checkifyouseethelearningwidget();
-        gotomyfeed();
+        filloutrequiredcommunityinfo(publiccommunityname);
+        clickoncreateacommunity();
+
+        //check if you see members tab
+        checkifyouseememberstab();
+
+        //compare community title to given title
+
+
+        gotohomepage();
 
     }
 
     public void createaprivatecommunity(){
 
         gotocommunitypage();
-        filloutcommunityinfo(privatecommunityname);
+        filloutrequiredcommunityinfo(privatecommunityname);
         Communities communities = new Communities(driver);
         communities.clickonbasictab();
         communities.clickonprivateicon();
-        createbuttonthread();
-        checkifyouseethelearningwidget();
-        gotomyfeed();
+        clickoncreateacommunity();
+
+        //check if you see members tab
+        checkifyouseememberstab();
+
+        //compare community title to given title
+
+        gotohomepage();
 
     }
 
-    public void createainviteonlycommunity(){
+    public void createaninviteonlycommunity(){
 
         gotocommunitypage();
-        filloutcommunityinfo(inviteonlycommunityname);
+        filloutrequiredcommunityinfo(inviteonlycommunityname);
         Communities communities = new Communities(driver);
         communities.clickonaddmemberstab();
         wait.until(ExpectedConditions.elementToBeClickable(communities.searchfield));
@@ -291,9 +320,14 @@ TestCase extends TestVariables {
         communities.clickonaddicon();
         communities.clickonbasictab();
         communities.clickoninviteonlyicon();
-        createbuttonthread();
-        checkifyouseethelearningwidget();
-        gotomyfeed();
+        clickoncreateacommunity();
+
+        //check if you see members tab
+        checkifyouseememberstab();
+
+        //compare community title to given title
+
+        gotohomepage();
 
     }
 
@@ -316,7 +350,7 @@ TestCase extends TestVariables {
             Thread.sleep(5000);
             wait.until(ExpectedConditions.elementToBeClickable(communities.firstmycommunityresult));
 
-            String check = communities.getfirstbrowsecommunityname();
+            String check = communities.getfirstmycommunityname();
 
             if(check.equals(browseallcommunitysearch)){
 
@@ -325,6 +359,8 @@ TestCase extends TestVariables {
             else{
                 System.out.println("Unable to join " + browseallcommunitysearch);
             }
+
+            gotohomepage();
 
         }catch (Exception e){
 
@@ -359,7 +395,7 @@ TestCase extends TestVariables {
             Thread.sleep(5000);
             wait.until(ExpectedConditions.elementToBeClickable(communities.firstmycommunityresult));
 
-            String check = communities.getfirstbrowsecommunityname();
+            String check = communities.getfirstmycommunityname();
 
             if(check.equals(browseallcommunitysearch)){
 
@@ -369,10 +405,107 @@ TestCase extends TestVariables {
                 System.out.println("Unable to join " + browseallcommunitysearch);
             }
 
+            gotohomepage();
+
         }catch (Exception e){
 
             e.printStackTrace();
         }
+
+    }
+
+    public void leaveacommunity(){
+
+
+        gotocommunitypage();
+        gotomycommunities();
+        searchforacommunity(browseallcommunitysearch);
+
+        Communities communities = new Communities(driver);
+        CommunityFeed communityfeed = new CommunityFeed(driver);
+        try {
+            Thread.sleep(5000);
+            wait.until(ExpectedConditions.elementToBeClickable(communities.firstmycommunityresult));
+            communities.clickonfirstmycommunityresult();
+            Thread.sleep(5000);
+            wait.until(ExpectedConditions.elementToBeClickable(communityfeed.optionsdropdown));
+            communityfeed.clickonoptionsdropdown();
+            wait.until(ExpectedConditions.elementToBeClickable(communityfeed.leaveoption));
+            communityfeed.clickonleaveoption();
+            wait.until(ExpectedConditions.elementToBeClickable(communityfeed.yesbutton));
+            communityfeed.clickonyesbutton();
+
+            clickonmycommunitiestab();
+            searchforacommunity(browseallcommunitysearch);
+
+         //   Thread.sleep(5000);
+
+
+            gotohomepage();
+
+        }catch (Exception e){
+
+            e.printStackTrace();
+        }
+
+
+
+
+    }
+
+    public void resetonboardingscreens(){
+
+        Header header = new Header(driver);
+        wait.until(ExpectedConditions.elementToBeClickable(header.help));
+        header.clickonhelp();
+
+        wait.until(ExpectedConditions.elementToBeClickable(header.showtutorialsagain));
+        header.clickonshowtutorialsagain();
+
+        gothroughonboardingscreens();
+
+    }
+
+    public void editprofile(){
+
+        gotoprofilepage();
+
+        Profile profile = new Profile(driver);
+        wait.until(ExpectedConditions.elementToBeClickable(profile.editprofilebutton));
+        profile.clickoneditprofilebutton();
+
+        EditProfile edit = new EditProfile(driver);
+        wait.until(ExpectedConditions.elementToBeClickable(edit.firstname));
+        edit.setFirstname(editfirstname);
+
+        wait.until(ExpectedConditions.elementToBeClickable(edit.lastname));
+        edit.setLastname(editlastname);
+
+        wait.until(ExpectedConditions.elementToBeClickable(edit.location));
+        edit.setLocation(editlocation);
+
+        wait.until(ExpectedConditions.elementToBeClickable(edit.aboutmetab));
+        edit.clickonaboutmetab();
+
+        wait.until(ExpectedConditions.elementToBeClickable(edit.aboutmedescription));
+        edit.setAboutmedescription(editaboutme);
+
+        wait.until(ExpectedConditions.elementToBeClickable(edit.intereststab));
+        edit.clickonintereststab();
+
+        wait.until(ExpectedConditions.elementToBeClickable(edit.interest1));
+        edit.select6interests();
+
+        wait.until(ExpectedConditions.elementToBeClickable(edit.savebutton));
+        edit.clickonsavebutton();
+
+        wait.until(ExpectedConditions.elementToBeClickable(edit.cancelbutton));
+        edit.clickoncancelbutton();
+
+        wait.until(ExpectedConditions.elementToBeClickable(edit.gotitbutton));
+        edit.clickongotitbutton();
+
+        gotohomepage();
 
     }
 
@@ -392,6 +525,13 @@ TestCase extends TestVariables {
 
     }
 
+    public void checkifyouseememberstab(){
+
+        Communities communities = new Communities(driver);
+        wait.until(ExpectedConditions.elementToBeClickable(communities.addmemberstab));
+
+    }
+
     public void gotocommunitypage(){
 
         Header header = new Header(driver);
@@ -400,21 +540,21 @@ TestCase extends TestVariables {
 
     }
 
+    public void gotoprofilepage(){
 
-    public void filloutcommunityinfo(String communityname){
+        Header header = new Header(driver);
+        wait.until(ExpectedConditions.elementToBeClickable(header.profile));
+        header.clickonprofile();
 
-        try {
+    }
 
-            Communities communities = new Communities(driver);
-            Thread.sleep(5000);
-            wait.until(ExpectedConditions.elementToBeClickable(communities.createacommunity));
-            communities.clickoncreateacommunity();
-
-        } catch (Exception e){
-            e.printStackTrace();
-        }
+    public void filloutrequiredcommunityinfo(String communityname){
 
         Communities communities = new Communities(driver);
+        wait.until(ExpectedConditions.elementToBeClickable(communities.createacommunity));
+        communities.clickoncreateacommunity();
+
+
         wait.until(ExpectedConditions.elementToBeClickable(communities.communityname));
         communities.setCommunityName(communityname);
         communities.setCommunityDescription(communitydescription);
@@ -426,24 +566,24 @@ TestCase extends TestVariables {
     }
 
 
-    public void createbuttonthread(){
+    public void clickoncreateacommunity(){
 
         Communities communities = new Communities(driver);
-        try {
-
-            Thread.sleep(5000);
-
-            communities.clickoncreatebutton();
-
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-
-
+        communities.clickoncreatebutton();
         wait.until(ExpectedConditions.elementToBeClickable(communities.gotit_button));
         communities.clickongotitbutton();
 
     }
+
+    public void gotohomepage(){
+
+        driver.manage().timeouts().setScriptTimeout(5, TimeUnit.SECONDS);
+        Header header = new Header(driver);
+        wait.until(ExpectedConditions.elementToBeClickable(header.home));
+        header.clickonhome();
+
+    }
+
 
     public void gotomycommunities(){
 
@@ -468,76 +608,73 @@ TestCase extends TestVariables {
 
     public void filloutpostinfo(){
 
-        try {
-            PostWidget post = new PostWidget(driver);
-            Thread.sleep(5000);
-            wait.until(ExpectedConditions.elementToBeClickable(post.postwidget));
-            post.clickonpostwidget();
-            Thread.sleep(5000);
-            wait.until(ExpectedConditions.elementToBeClickable(post.posttitle));
-            post.setposttitle(posttitle);
-            Thread.sleep(3000);
-            wait.until(ExpectedConditions.elementToBeClickable(post.postbody));
-            Actions actions = new Actions(driver);
-            actions.moveToElement(driver.findElement(By.xpath("//*[@id='ephox_textboxCreateLearning']/div/div[4]")));;
-            actions.click();
-            actions.sendKeys(postbodytext);
-            actions.build().perform();
-            post.clickontagsicon();
-            post.select6tags();
-            post.clickontagsicon();
-            wait.until(ExpectedConditions.invisibilityOfElementLocated(post.tagslist));
-            }catch (Exception e){
-
-            e.printStackTrace();
-        }
-
-    }
-
-    public void gotomyfeed(){
-
-        try {
-            Header header = new Header(driver);
-            Thread.sleep(5000);
-            wait.until(ExpectedConditions.elementToBeClickable(header.myfeed));
-            header.clickonmyfeed();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
-    }
-
-
-    public boolean verifymethod(By by){
-
-        boolean value;
-
         try{
 
-            Thread.sleep(5000);
-            driver.findElement(by);
+        Thread.sleep(3000);
 
-            return true;
+        PostWidget post = new PostWidget(driver);
 
-        } catch(Exception e){
+        wait.until(ExpectedConditions.elementToBeClickable(post.postwidget));
+        post.clickonpostwidget();
 
-            return false;
+        wait.until(ExpectedConditions.elementToBeClickable(post.posttitle));
+        post.setposttitle(posttitle);
+
+        wait.until(ExpectedConditions.elementToBeClickable(post.postbody));
+        Actions actions = new Actions(driver);
+        actions.moveToElement(driver.findElement(post.postbody));
+        actions.click();
+        actions.sendKeys(postbodytext);
+        actions.build().perform();
+
+        wait.until(ExpectedConditions.elementToBeClickable(post.tagsicon));
+        post.clickontagsicon();
+
+        wait.until(ExpectedConditions.elementToBeClickable(post.tags_icon1));
+        post.select6tags();
+
+        wait.until(ExpectedConditions.elementToBeClickable(post.tagsicon));
+        post.clickontagsicon();
+
+        }catch (Exception e){
+
+            e.printStackTrace();
         }
+
 
     }
 
-    public void verifymessage(Boolean bool, String message1, String message2){
 
-        String verify = bool.toString();
-        if(verify.equals("true")){
 
-            System.out.println(message1);
+    public Boolean iselementdisplayed(By by){
 
-        }else if(verify.equals("false")){
+        Boolean isPresent = driver.findElements(by).size() != 0;
 
-            System.out.println(message2);
+        return isPresent;
+    }
 
-        }
+
+    public void verifymessage(By by, String message1, String message2){
+
+
+            try{
+
+                driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+
+                Boolean isPresent = driver.findElements(by).size() != 0;
+
+                Assert.assertTrue(isPresent);
+
+                System.out.println(message1 + " - Passed");
+
+            }catch(AssertionError e){
+
+                System.out.println(message1 + " - Failed");
+
+                throw e;
+            }
+
+
 
     }
 
@@ -566,10 +703,54 @@ TestCase extends TestVariables {
         communities.clickonbrowsecommunities();
     }
 
+    public void gothroughonboardingscreens(){
 
 
+        Onboarding onboarding = new Onboarding(driver);
 
+        wait.until(ExpectedConditions.elementToBeClickable(onboarding.myfeed_nextbutton));
+        onboarding.clickonmyfeednextbutton();
 
+        wait.until(ExpectedConditions.elementToBeClickable(onboarding.myfeed_nextbutton));
+        onboarding.clickonmyfeednextbutton();
+
+        wait.until(ExpectedConditions.elementToBeClickable(onboarding.myfeed_gotitbutton));
+        onboarding.clickonmyfeedgotitbutton();
+
+        PostWidget widget = new PostWidget(driver);
+        wait.until(ExpectedConditions.elementToBeClickable(widget.postwidget));
+        widget.clickonpostwidget();
+        wait.until(ExpectedConditions.elementToBeClickable(widget.anonymousbutton));
+        widget.clickonanyonmousbutton();
+        wait.until(ExpectedConditions.elementToBeClickable(onboarding.anonymous_gotitbutton));
+        onboarding.clickonanonymousgotitbutton();
+
+        wait.until(ExpectedConditions.elementToBeClickable(widget.recipientsbutton));
+        widget.clickonrecipientsbutton();
+        wait.until(ExpectedConditions.elementToBeClickable(onboarding.recipients_gotitbutton));
+        onboarding.clickonrecipientsgotitbutton();
+
+        gotocommunitypage();
+
+        wait.until(ExpectedConditions.elementToBeClickable(onboarding.communities_gotitbutton));
+        onboarding.clickoncommunitiesgotitbutton();
+
+        gotoprofilepage();
+
+        wait.until(ExpectedConditions.elementToBeClickable(onboarding.profile_nextbutton));
+        onboarding.clickonprofilenextbutton();
+
+        wait.until(ExpectedConditions.elementToBeClickable(onboarding.profile_nextbutton));
+        onboarding.clickonprofilenextbutton();
+
+        wait.until(ExpectedConditions.elementToBeClickable(onboarding.profile_gotitbutton));
+        onboarding.clickonprofilegotitbutton();
+
+        //need to add aha onboarding
+        
+        gotohomepage();
+
+    }
 
 
 }

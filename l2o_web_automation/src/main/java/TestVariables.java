@@ -12,25 +12,33 @@ public class TestVariables{
     //register
     String firstname = "Test";
     String lastname = "Test";
-    String register_email = "test102@testing.com";
+    String register_email = "test103443ds@testing.com";
     String register_password = "L2o123456";
     String repeatpassword = "L2o123456";
+    String organization = "7889";
 
     //create a community
-    String publiccommunityname = "RandomCommunityName_lol3fd4dffdf";
-    String privatecommunityname = "RandomCommunityName_l00vcvvdfdfddc0df4";
-    String inviteonlycommunityname = "RandomCommunityName_f6vcvvhddfdfdcvccv46";
+    String publiccommunityname = "RandomCommunityName_lol3fd4sddsdsdbdffdf";
+    String privatecommunityname = "RandomCommunityName_l00vsddscvvdsdsbbdfdfddc0df4";
+    String inviteonlycommunityname = "RandomCommunityName_f6vcddssdvvbdsdsdbhddfdfdcvccv46";
     String communitydescription = "This community was creating using Selenium Framework";
     String searchname = "shail";
     String image = "C:\\Users\\shail\\Desktop\\testimage.png";
 
     //search a community
     String mycommunitysearch = "Banks";
-    String browseallcommunitysearch = "admin stuff testing";
+    String browseallcommunitysearch = "65354";
 
     //create a learning
     String posttitle = "Automation Test";
     String postbodytext =  "Test Automated Post. This post was created using Selenium Automation Framework";
+
+    //Edit profile
+    String editfirstname = "sddSSAAS";
+    String editlastname = "SssdSAfddfAS";
+    String editlocation = "SSAsddsAfddfS";
+    String editaboutme = "SSAAdffsddssdsdddffdfdfdS";
+
 
 }
 

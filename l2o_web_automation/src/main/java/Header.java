@@ -4,14 +4,19 @@ import org.openqa.selenium.WebDriver;
 /**
  * Created by shail on 1/24/2017.
  */
-public class Header {
+public class Header extends TestId{
 
     WebDriver driver;
 
-    By myfeed = By.className("learning-feed-menu");
-    By communities = By.className("communities-menu");
-    By moremenu = By.xpath("/html/body/app-layout/div/div[1]/header/nav[1]/div/div/ul/li[9]");
-    By logout = By.xpath("//*[@id='dropDownMenuHeader']/li[4]");
+    By home = By.cssSelector(testid("app-header__home-btn"));
+    By communities = By.cssSelector(testid("app-header__communities-btn"));
+    By profile = By.cssSelector(testid("app-header__profile-btn"));
+    By findpeople = By.cssSelector(testid("app-header__find-people-btn"));
+    By help = By.cssSelector(testid("app-header__help-btn"));
+    By showtutorialsagain = By.cssSelector(testid("app-header__show-tutorials-btn"));
+    By moremenu = By.cssSelector(testid("app-header__more-menu-btn"));
+    By settings = By.cssSelector(testid("app-header__settings-btn"));
+    By logout = By.cssSelector(testid("app-header__log-out-btn"));
 
 
     public Header(WebDriver driver){
@@ -19,9 +24,9 @@ public class Header {
         this.driver = driver;
     }
 
-    public void clickonmyfeed(){
+    public void clickonhome(){
 
-        driver.findElement(myfeed).click();
+        driver.findElement(home).click();
     }
 
     public void clickoncommunities(){
@@ -29,10 +34,36 @@ public class Header {
         driver.findElement(communities).click();
     }
 
+    public void clickonprofile(){
+
+        driver.findElement(profile).click();
+    }
+
+    public void clickonfindpeople(){
+
+        driver.findElement(findpeople).click();
+    }
+
+    public void clickonhelp(){
+
+        driver.findElement(help).click();
+    }
+
+    public void clickonshowtutorialsagain(){
+
+        driver.findElement(showtutorialsagain).click();
+    }
+
     public void clickonmoremenu(){
 
         driver.findElement(moremenu).click();
     }
+
+    public void clickonsettings(){
+
+        driver.findElement(settings).click();
+    }
+
 
     public void clickonlogout(){
 

@@ -7,44 +7,48 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by shail on 1/24/2017.
  */
-public class Communities {
+public class Communities extends TestId{
 
     WebDriver driver;
 
-    By createacommunity = By.xpath("//*[@id='panel-scroll-x']/div[3]/div/button");
-    By waitforcommunitiestoload = By.xpath("/html/body/app-layout/div/section/ui-view/div/div[3]");
+    By createacommunity = By.cssSelector(testid("communities__create-community-btn"));
+    By waitforcommunitiestoload = By.cssSelector(testid("communities__create-community-btn"));
 
-    By browsecommunitiestab = By.xpath("/html/body/app-layout/div/section/ui-view/div/div[1]/div/div[2]/div/a[2]");
-    By mycommunitiestab = By.xpath("/html/body/app-layout/div/section/ui-view/div/div[1]/div/div[2]/div/a[1]");
-    By searchcommunityfield = By.id("searchBoxForCommunities");
-    By firstmycommunityresult = By.xpath("/html/body/app-layout/div/section/ui-view/div/div[3]/div/div[1]");
-    By firstbrowsecommunityresult = By.xpath("/html/body/app-layout/div/section/ui-view/div/div[4]/div/div[1]");
-    By getFirstbrowsecommunityname = By.xpath("/html/body/app-layout/div/section/ui-view/div/div[3]/div/div[1]/div/div[2]/div[3]/div[1]");
+    By browsecommunitiestab = By.cssSelector(testid("communities__browse-tab"));
+    By mycommunitiestab = By.cssSelector(testid("communities__my-communities-tab"));
+    By searchcommunityfield = By.cssSelector(testid("communities__create-community-btn"));
+    By firstmycommunityresult = By.cssSelector(testid("communities__my-community-0"));
+    By firstbrowsecommunityresult = By.cssSelector(testid("communities__my-community-0"));
+    By getfirstmycommunityname = By.cssSelector(testid("communities__my-community-name-0"));
+
 
     By communityname = By.id("communityName");
     By communitydescription = By.id("desc");
-    By publicicon = By.xpath("//*[@id='basicInfo']/div/div[4]/ul/li[1]/a/span[1]");
-    By privateicon = By.xpath("//*[@id='basicInfo']/div/div[4]/ul/li[2]/a/span[1]");
-    By inviteonlyicon = By.xpath("//*[@id='basicInfo']/div/div[4]/ul/li[3]/a/span[1]");
-    By imageicon = By.xpath("//*[@id='basicInfo']/div/div[3]/div[1]/div[2]/div[1]");
+    By publicicon = By.cssSelector(testid("create-community__public-privacy"));
+    By privateicon = By.cssSelector(testid("create-community__private-privacy"));
+    By inviteonlyicon = By.cssSelector(testid("create-community__invite-privacy"));
+    By imageicon = By.cssSelector(testid("create-community__image-btn"));
 
-    By basictab = By.id("basicInfoCommunity");
-    By tagtab = By.xpath("//*[@id='mobileHeight']/li[2]/a[1]");
-    By addmemberstab = By.id("add-members");
+    By basictab = By.cssSelector(testid("create-community__basic-info-tab"));
+    By tagtab = By.cssSelector(testid("create-community__tag-tab"));
+    By addmemberstab = By.cssSelector(testid("create-community__members-tab"));
+    By coverphototab = By.cssSelector(testid("create-community__cover-photo-tab"));
+    By settingstab = By.cssSelector(testid("create-community__settings-tab"));
 
-    By tag1 = By.xpath("//*[@id='scrollbarTags']/div/ul/li[1]");
-    By tag2 = By.xpath("//*[@id='scrollbarTags']/div/ul/li[2]");
-    By tag3 = By.xpath("//*[@id='scrollbarTags']/div/ul/li[3]");
-    By tag4 = By.xpath("//*[@id='scrollbarTags']/div/ul/li[4]");
-    By tag5 = By.xpath("//*[@id='scrollbarTags']/div/ul/li[5]");
-    By tag6 = By.xpath("//*[@id='scrollbarTags']/div/ul/li[6]");
 
-    By searchfield = By.xpath("//*[@id='addMembers']/div[1]/div[1]/div/input");
-    By addicon = By.xpath("//*[@id='addMembers']/div[1]/div[2]/div[2]/div[1]/span[3]/img");
+    By tag1 = By.cssSelector(testid("create-community__tag-0"));
+    By tag2 = By.cssSelector(testid("create-community__tag-1"));
+    By tag3 = By.cssSelector(testid("create-community__tag-2"));
+    By tag4 = By.cssSelector(testid("create-community__tag-3"));
+    By tag5 = By.cssSelector(testid("create-community__tag-4"));
+    By tag6 = By.cssSelector(testid("create-community__tag-5"));
+
+    By searchfield = By.cssSelector(testid("create-community__search-members-input"));
+    By addicon = By.cssSelector(testid("create-community__user-add-0"));
 
     By create_button = By.id("create-community-btn");
-    By gotit_button = By.xpath("/html/body/app-layout/div/div[9]/div/div/div[2]/button");
-    By join_button = By.xpath("/html/body/app-layout/div/section/ui-view/div/div[4]/div[1]/div/div[2]/div[2]/div[3]/button");
+    By gotit_button = By.className("close-growl");
+    By join_button = By.cssSelector(testid("communities__create-community-btn"));
 
     public Communities(WebDriver driver){
 
@@ -82,9 +86,9 @@ public class Communities {
         driver.findElement(firstbrowsecommunityresult).click();
     }
 
-    public String getfirstbrowsecommunityname(){
+    public String getfirstmycommunityname(){
 
-      String name = driver.findElement(getFirstbrowsecommunityname).getText();
+      String name = driver.findElement(getfirstmycommunityname).getText();
 
       return name;
     }
@@ -176,8 +180,6 @@ public class Communities {
         driver.findElement(join_button).click();
 
     }
-
-
 
 
 
