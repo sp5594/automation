@@ -1,3 +1,4 @@
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,11 +48,11 @@ public class TestCase extends TestVariables {
 
         driver.manage().timeouts().setScriptTimeout(30, TimeUnit.SECONDS);
 
-      //  email_registration();
-     //   logout();
+        email_registration();
+        logout();
         login();
 
-      //  resetonboardingscreens();
+        resetonboardingscreens();
 
         posttohomecommunity("notanonymous");
         posttohomecommunity("anonymous");
@@ -66,33 +67,33 @@ public class TestCase extends TestVariables {
         createaprivatecommunity();
         createaninviteonlycommunity();
 
-   //   joinacommunityfromcommunityfeedpage();
-   //   joinacommunityfromcommunitypage();
+        joinacommunityfromcommunityfeedpage();
+        joinacommunityfromcommunitypage();
 
 
-        //  followsomeoneviajournal();
-        //  unfollowsomeoneviajournal();
+        followsomeoneviajournal();
+        unfollowsomeoneviajournal();
 
-        //  followsomeoneviafindpeoplepage();
-        //  unfollowsomeoneviafindpeoplepage();
+        followsomeoneviafindpeoplepage();
+        unfollowsomeoneviafindpeoplepage();
 
-        //   sendinvitationsviaemail();
+        sendinvitationsviaemail();
 
-        // editprofile();
+        editprofile();
 
         logout();
 
-       // resetpassword();
+        resetpassword();
 
 
     }
 
- /*   @After
+    @After
     public void close(){
 
         driver.close();
 
-    } */
+    }
 
     /**
      * <----------------------------------------------------------------------->
