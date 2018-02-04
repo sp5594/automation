@@ -14,7 +14,6 @@ public class LandingPage extends TestId {
 
     WebDriver driver;
 
-
     By login_email = By.cssSelector(testid("login-form__email"));
     By login_password = By.cssSelector(testid("login-form__password"));
     By login = By.cssSelector(testid("login-form__login-btn"));

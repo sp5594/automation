@@ -4,7 +4,7 @@ import org.openqa.selenium.WebDriver;
 /**
  * Created by shail on 2/1/2017.
  */
-public class Profile extends TestId {
+public class PrivateProfile extends TestId {
 
     WebDriver driver;
 
@@ -19,7 +19,7 @@ public class Profile extends TestId {
     By onlymepoststatement1 = By.cssSelector(testid("post--statement-0"));
 
 
-    public Profile(WebDriver driver){
+    public PrivateProfile(WebDriver driver){
 
         this.driver = driver;
     }

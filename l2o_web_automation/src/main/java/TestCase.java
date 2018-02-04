@@ -19,6 +19,7 @@ public class TestCase extends TestVariables {
     WebDriver driver;
     WebDriverWait wait;
 
+
     @Before
     public void setup(){
 
@@ -46,10 +47,11 @@ public class TestCase extends TestVariables {
 
         driver.manage().timeouts().setScriptTimeout(30, TimeUnit.SECONDS);
 
-     //   email_registration();
+      //  email_registration();
      //   logout();
         login();
-     /*   resetonboardingscreens();
+
+      //  resetonboardingscreens();
 
         posttohomecommunity("notanonymous");
         posttohomecommunity("anonymous");
@@ -60,22 +62,37 @@ public class TestCase extends TestVariables {
         posttoarandomcommunity("notanonymous");
         posttoarandomcommunity("anonymous");
 
-
-       createapubliccommunity();
-       createaprivatecommunity();
-       createaninviteonlycommunity(); */
+        createapubliccommunity();
+        createaprivatecommunity();
+        createaninviteonlycommunity();
 
    //   joinacommunityfromcommunityfeedpage();
    //   joinacommunityfromcommunitypage();
 
-      //  editprofile();
+
+        //  followsomeoneviajournal();
+        //  unfollowsomeoneviajournal();
+
+        //  followsomeoneviafindpeoplepage();
+        //  unfollowsomeoneviafindpeoplepage();
+
+        //   sendinvitationsviaemail();
+
+        // editprofile();
 
         logout();
 
-        //resetpassword();
+       // resetpassword();
 
 
     }
+
+ /*   @After
+    public void close(){
+
+        driver.close();
+
+    } */
 
     /**
      * <----------------------------------------------------------------------->
@@ -94,6 +111,7 @@ public class TestCase extends TestVariables {
 
         //verify method
         PostWidget post = new PostWidget(driver);
+        wait.until(ExpectedConditions.elementToBeClickable(post.postwidget));
 
         verifymessage(post.postwidget, "Log In", "Log In");
 
@@ -180,7 +198,7 @@ public class TestCase extends TestVariables {
 
 
         //verfies that you`re in the private journal
-        Profile journal = new Profile(driver);
+        PrivateProfile journal = new PrivateProfile(driver);
         wait.until(ExpectedConditions.elementToBeClickable(journal.onlymetab));
 
         //waits for the first post to be visible
@@ -230,7 +248,7 @@ public class TestCase extends TestVariables {
         wait.until(ExpectedConditions.elementToBeClickable(feed.communitypost1));
 
         //wait until first post is visible then compare post title to the given title
-        Assert.assertEquals(posttitle, feed.getcommunitypostitle1());
+        Assert.assertEquals("Automation Test", feed.getcommunitypostitle1());
 
         gotohomepage();
 
@@ -470,9 +488,9 @@ public class TestCase extends TestVariables {
 
         gotoprofilepage();
 
-        Profile profile = new Profile(driver);
-        wait.until(ExpectedConditions.elementToBeClickable(profile.editprofilebutton));
-        profile.clickoneditprofilebutton();
+        PrivateProfile privateProfile = new PrivateProfile(driver);
+        wait.until(ExpectedConditions.elementToBeClickable(privateProfile.editprofilebutton));
+        privateProfile.clickoneditprofilebutton();
 
         EditProfile edit = new EditProfile(driver);
         wait.until(ExpectedConditions.elementToBeClickable(edit.firstname));
@@ -509,6 +527,142 @@ public class TestCase extends TestVariables {
 
     }
 
+    public void sendinvitationsviaemail(){
+
+        gotofindpeoplepage();
+
+        FindPeople invite = new FindPeople(driver);
+        wait.until(ExpectedConditions.elementToBeClickable(invite.sendinvitation));
+        invite.clickonsendinvitation();
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(invite.addanotherperson));
+        invite.inviteinfo(totalinvites,inviteemails,invitefirstnames, invitelastnames);
+
+        wait.until(ExpectedConditions.elementToBeClickable(invite.sendinvite));
+        invite.clickonsendinvite();
+
+        wait.until(ExpectedConditions.elementToBeClickable(invite.gotitbutton));
+        invite.clickongotitbutton();
+
+        wait.until(ExpectedConditions.elementToBeClickable(invite.closeinvitemodal));
+        invite.clickoncloseinvitemodalbutton();
+
+        gotohomepage();
+
+
+    }
+
+    public void followsomeoneviajournal(){
+
+        gotofindpeoplepage();
+
+        FindPeople follow = new FindPeople(driver);
+        wait.until(ExpectedConditions.elementToBeClickable(follow.searchmembers));
+        follow.searchforauser("Sachin");
+
+        // waits for results to show up
+        driver.manage().timeouts().setScriptTimeout(2, TimeUnit.SECONDS);
+
+        //Assert first user name = username provided above
+
+        wait.until(ExpectedConditions.elementToBeClickable(follow.searchresultuser1));
+        follow.clickonfirstuser();
+
+        PublicProfile profile = new PublicProfile(driver);
+        wait.until(ExpectedConditions.elementToBeClickable(profile.post));
+        profile.clickonefollowunfollowbutton();
+
+        wait.until(ExpectedConditions.elementToBeClickable(profile.yesoption));
+        profile.clickonyesoption();
+
+        //Assert if it says following
+
+        gotohomepage();
+
+
+    }
+
+    public void unfollowsomeoneviajournal(){
+
+        gotofindpeoplepage();
+
+        FindPeople follow = new FindPeople(driver);
+        wait.until(ExpectedConditions.elementToBeClickable(follow.searchmembers));
+        follow.searchforauser("Sachin");
+
+        // waits for results to show up
+        driver.manage().timeouts().setScriptTimeout(2, TimeUnit.SECONDS);
+
+        //Assert first user name = username provided above
+
+        wait.until(ExpectedConditions.elementToBeClickable(follow.searchresultuser1));
+        follow.clickonfirstuser();
+
+        PublicProfile profile = new PublicProfile(driver);
+        wait.until(ExpectedConditions.elementToBeClickable(profile.follow_unfollow_button));
+        profile.clickonefollowunfollowbutton();
+
+        wait.until(ExpectedConditions.elementToBeClickable(profile.yesoption));
+        profile.clickonyesoption();
+
+        //Assert if it says unfollow
+
+        gotohomepage();
+
+
+
+    }
+
+    public void followsomeoneviafindpeoplepage(){
+
+        gotofindpeoplepage();
+
+        FindPeople follow = new FindPeople(driver);
+        wait.until(ExpectedConditions.elementToBeClickable(follow.searchmembers));
+        follow.searchforauser("sachin");
+
+        // waits for results to show up
+        driver.manage().timeouts().setScriptTimeout(2, TimeUnit.SECONDS);
+
+        //Assert first user name = username provided above
+
+
+        wait.until(ExpectedConditions.elementToBeClickable(follow.searchresultfollow1));
+        follow.clickonfirstuserfollowbutton();
+
+        //Assert button = follow
+
+        gotohomepage();
+
+        // waits for results to show up
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+
+
+    }
+
+    public void unfollowsomeoneviafindpeoplepage(){
+
+        gotofindpeoplepage();
+
+        FindPeople follow = new FindPeople(driver);
+        wait.until(ExpectedConditions.elementToBeClickable(follow.searchmembers));
+        follow.searchforauser("sachin");
+
+        // waits for results to show up
+        driver.manage().timeouts().setScriptTimeout(2, TimeUnit.SECONDS);
+
+        //Assert first user name = username provided above
+
+        wait.until(ExpectedConditions.elementToBeClickable(follow.searchresultunfollow1));
+        follow.clickonfirstuserunfollowbutton();
+
+        //Assert button = unfollow
+
+        gotohomepage();
+
+    }
+
+
 
 
 
@@ -527,8 +681,8 @@ public class TestCase extends TestVariables {
 
     public void checkifyouseememberstab(){
 
-        Communities communities = new Communities(driver);
-        wait.until(ExpectedConditions.elementToBeClickable(communities.addmemberstab));
+        CommunityFeed communityfeed = new CommunityFeed(driver);
+        wait.until(ExpectedConditions.elementToBeClickable(communityfeed.memberstab));
 
     }
 
@@ -545,6 +699,14 @@ public class TestCase extends TestVariables {
         Header header = new Header(driver);
         wait.until(ExpectedConditions.elementToBeClickable(header.profile));
         header.clickonprofile();
+
+    }
+
+    public void gotofindpeoplepage(){
+
+        Header header = new Header(driver);
+        wait.until(ExpectedConditions.elementToBeClickable(header.findpeople));
+        header.clickonfindpeople();
 
     }
 
@@ -577,10 +739,16 @@ public class TestCase extends TestVariables {
 
     public void gotohomepage(){
 
-        driver.manage().timeouts().setScriptTimeout(5, TimeUnit.SECONDS);
+        // waits for 2 secs on the home page
+        driver.manage().timeouts().setScriptTimeout(10, TimeUnit.SECONDS);
+
         Header header = new Header(driver);
         wait.until(ExpectedConditions.elementToBeClickable(header.home));
         header.clickonhome();
+
+        // waits for post widget to be visible
+        PostWidget post = new PostWidget(driver);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(post.postwidget));
 
     }
 
